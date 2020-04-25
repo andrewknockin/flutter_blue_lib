@@ -5,16 +5,20 @@
 
 import 'dart:async';
 import 'dart:math';
+// for _getRandomString()
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'widgets.dart';
 
+const String temperatureService_UUID = "F000AA00-0451-4000-B000-000000000000";
+
 void main() {
-  runApp(FlutterBlueApp());
+  runApp(MyApp());
 }
 
-class FlutterBlueApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -74,8 +78,10 @@ class FindDevicesScreen extends StatelessWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () =>
-            FlutterBlue.instance.startScan(timeout: Duration(seconds: 4)),
-        child: SingleChildScrollView(
+            FlutterBlue.instance.startScan(
+                timeout: Duration(seconds: 4)),
+                //timeout: Duration(seconds: 4), withServices: [Guid(temperatureService_UUID)]),
+      child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               StreamBuilder<List<BluetoothDevice>>(
@@ -145,6 +151,7 @@ class FindDevicesScreen extends StatelessWidget {
                 child: Icon(Icons.search),
                 onPressed: () => FlutterBlue.instance
                     .startScan(timeout: Duration(seconds: 4)));
+            //.startScan(timeout: Duration(seconds: 4), withServices: [Guid(temperatureService_UUID)])),
           }
         },
       ),
@@ -167,6 +174,25 @@ class DeviceScreen extends StatelessWidget {
     ];
   }
 
+  List<int> _getRandomString() {
+    final String string1 = 'Hello';
+    final String string2 = 'Guten Tag';
+    final String string3 = 'Bonjour';
+    final String string4 = 'Hola';
+    final String stringDefault = 'Hello world';
+    switch(Random().nextInt(4)) {
+      case 0: {return utf8.encode(string1); }
+      break;
+      case 1: {return utf8.encode(string2); }
+      break;
+      case 2: {return utf8.encode(string3); }
+      break;
+      default: {return utf8.encode(string4); }
+      break;
+    }
+    return utf8.encode(stringDefault);  // should never get here
+  }
+
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
     return services
         .map(
@@ -179,6 +205,7 @@ class DeviceScreen extends StatelessWidget {
                     onReadPressed: () => c.read(),
                     onWritePressed: () async {
                       await c.write(_getRandomBytes(), withoutResponse: true);
+                      // await c.write(_getRandomString(), withoutResponse: true);
                       await c.read();
                     },
                     onNotificationPressed: () async {

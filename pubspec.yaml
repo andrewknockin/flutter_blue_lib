@@ -1,5 +1,5 @@
-name: flutterblue
-description: A new Flutter application.
+name: flutter_blue_lib
+description: A simple flutter_blue library example.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -24,7 +24,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   flutter_blue: ^0.7.1
-
 
 dev_dependencies:
   flutter_test:
