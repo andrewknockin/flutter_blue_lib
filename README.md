@@ -1,6 +1,7 @@
 # flutterblue
 
-A new Flutter application.
+An example Flutter application for the flutter_blue library based on the original 2 file example.
+Compiles and runs on an iPhone6 and sees multiple devices (TV, phone, etc).
 
 ## Getting Started
 
